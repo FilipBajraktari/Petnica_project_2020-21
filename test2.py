@@ -1,12 +1,12 @@
-from bookImplementation import network, network2
-import mnist_loader as ml
-import neuralNetwork
-import neuralNetwork2
-import numpy as np
-import random
+import neuralNetwork3
 
-sizes = [784, 30, 10]
+tr_d, val_d, te_d = neuralNetwork3.load_data_shared()
+mini_batch_size = 10
 
-tr_d, te_d = ml.load_data_wrapper()
-net = neuralNetwork2.Network(sizes, neuralNetwork2.Cross_Entropy_Cost)
-print(net.SGD(tr_d, 40, 10, 0.0005, 0.0, te_d))
+net = neuralNetwork3.Network([
+    neuralNetwork3.FullyConnectedLayer(n_in=784, n_out=100),
+    neuralNetwork3.SoftmaxLayer(n_in=100, n_out=10)],
+    mini_batch_size
+)
+
+net.SGD(tr_d, 60, mini_batch_size, 0.1, val_d, te_d)
